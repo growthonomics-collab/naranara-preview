@@ -126,6 +126,7 @@
     var b = e.target.closest('[data-add]');
     if (b) {
       e.preventDefault();
+      if (b.disabled) return;
       var q = 1, v = '';
       if (b.hasAttribute('data-main')) {
         var qi = $('.buy .qty input'); if (qi) q = Math.max(1, parseInt(qi.value, 10) || 1);
@@ -168,13 +169,13 @@
   /* ---------- Category: sort + working filters ---------- */
   var grid = $('[data-grid]');
   if (grid) {
-    var cards = $$('.card', grid), F = { brand: '', min: null, max: null, sale: false, isnew: false };
+    var cards = $$('.card', grid), F = { brand: '', min: null, max: null, sale: false, isnew: false, stock: [] };
     var countEl = $('[data-count]'), activeEl = $('[data-active]'), emptyEl = $('[data-noresults]');
     var apply = function () {
       var n = 0;
       cards.forEach(function (c) {
         var p = parseFloat(c.dataset.price);
-        var ok = (!F.brand || c.dataset.brand === F.brand) && (F.min === null || p >= F.min) && (F.max === null || p <= F.max) && (!F.sale || c.dataset.sale === '1') && (!F.isnew || c.dataset.new === '1');
+        var ok = (!F.brand || c.dataset.brand === F.brand) && (F.min === null || p >= F.min) && (F.max === null || p <= F.max) && (!F.sale || c.dataset.sale === '1') && (!F.isnew || c.dataset.new === '1') && (!F.stock.length || F.stock.indexOf(c.dataset.stock) > -1);
         c.hidden = !ok; if (ok) n++;
       });
       if (countEl) countEl.textContent = n === 1 ? T('1 προϊόν', '1 product') : n + T(' προϊόντα', ' products');
@@ -184,6 +185,8 @@
       if (F.min !== null || F.max !== null) chips.push(['price', (F.min !== null ? money(F.min) : '0 €') + ' ' + T('έως', 'to') + ' ' + (F.max !== null ? money(F.max) : '∞')]);
       if (F.sale) chips.push(['sale', T('Σε προσφορά', 'On offer')]);
       if (F.isnew) chips.push(['isnew', T('Νέες αφίξεις', 'New arrivals')]);
+      if (F.stock.indexOf('instock') > -1) chips.push(['instock', T('Άμεσα διαθέσιμα', 'In stock')]);
+      if (F.stock.indexOf('outofstock') > -1) chips.push(['outofstock', T('Εξαντλημένα', 'Out of stock')]);
       if (activeEl) {
         activeEl.hidden = !chips.length;
         activeEl.innerHTML = chips.map(function (c) { return '<button type="button" class="chip on" data-clear="' + c[0] + '">' + esc(c[1]) + ' <span aria-hidden="true">×</span><span class="sr">' + T('Αφαίρεση φίλτρου', 'Remove filter') + '</span></button>'; }).join('') + (chips.length ? '<button type="button" class="f-reset" data-clear="all">' + T('Καθαρισμός όλων', 'Clear all') + '</button>' : '');
@@ -191,6 +194,7 @@
       $$('[data-brand-chip]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-brand-chip') === F.brand); });
       $$('[data-f-sale]').forEach(function (i) { i.checked = F.sale; });
       $$('[data-f-new]').forEach(function (i) { i.checked = F.isnew; });
+      $$('[data-f-stock]').forEach(function (i) { i.checked = F.stock.indexOf(i.getAttribute('data-f-stock')) > -1; });
     };
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-brand-chip]');
@@ -202,12 +206,19 @@
         if (k === 'all' || k === 'price') { F.min = F.max = null; $$('[data-f-min],[data-f-max]').forEach(function (i) { i.value = ''; }); }
         if (k === 'all' || k === 'sale') F.sale = false;
         if (k === 'all' || k === 'isnew') F.isnew = false;
+        if (k === 'all') F.stock = [];
+        if (k === 'instock' || k === 'outofstock') F.stock = F.stock.filter(function (x) { return x !== k; });
         apply();
       }
     });
     document.addEventListener('change', function (e) {
       if (e.target.matches('[data-f-sale]')) { F.sale = e.target.checked; apply(); }
       if (e.target.matches('[data-f-new]')) { F.isnew = e.target.checked; apply(); }
+      if (e.target.matches('[data-f-stock]')) {
+        var sv = e.target.getAttribute('data-f-stock');
+        F.stock = F.stock.filter(function (x) { return x !== sv; }); if (e.target.checked) F.stock.push(sv);
+        apply();
+      }
     });
     $$('form[data-f-price]').forEach(function (f) {
       f.addEventListener('submit', function (e) {
@@ -259,12 +270,20 @@
     });
     gm.addEventListener('mouseleave', function () { gimg.style.transform = ''; });
   }
-  $$('.swatch').forEach(function (b) {
-    b.addEventListener('click', function () {
-      $$('.swatch').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
-      var out = $('[data-swatch-out]'); if (out) out.textContent = b.textContent.trim();
-    });
-  });
+  function pickSwatch(b) {
+    $$('.swatch').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    var out = $('[data-swatch-out]'); if (out) out.textContent = b.textContent.trim();
+    var main = $('[data-main]'), line = $('[data-stock-line]'), pr = $('[data-pdp-price]'), sp = $('[data-sticky-price]');
+    var price = parseFloat(b.dataset.price), old = parseFloat(b.dataset.old), ok = b.dataset.stock === '1';
+    if (pr && !isNaN(price)) pr.innerHTML = !isNaN(old) ? '<span class="now">' + money(price) + '</span><del>' + money(old) + '</del>' : money(price);
+    if (sp && !isNaN(price)) sp.textContent = money(price);
+    if (main) {
+      if (!isNaN(price)) main.setAttribute('data-price', price);
+      main.disabled = !ok; main.textContent = main.getAttribute(ok ? 'data-l-add' : 'data-l-out');
+    }
+    if (line) { line.classList.toggle('out', !ok); line.textContent = line.getAttribute(ok ? 'data-l-in' : 'data-l-out'); }
+  }
+  $$('.swatch').forEach(function (b) { b.addEventListener('click', function () { pickSwatch(b); }); });
   var sb = $('.stickybuy'), br = $('.buy-row');
   if (sb && br && 'IntersectionObserver' in window) new IntersectionObserver(function (en) { sb.classList.toggle('show', !en[0].isIntersecting && en[0].boundingClientRect.top < 0); }).observe(br);
 
