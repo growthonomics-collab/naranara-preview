@@ -718,3 +718,114 @@ h3{font-size:1.08rem}
 .store .tel{font-size:1.05rem}
 .sec{padding-block:clamp(48px,6.5vw,88px)}
 .sec-head{margin-bottom:clamp(24px,3vw,36px)}
+
+/* =====================================================================
+   Colour pass B: light and premium.
+   Dark is kept for the hero and the footer. Orange is kept for the buy action
+   (add to cart, checkout, the hero button) and the cart counter.
+   ===================================================================== */
+
+/* Announcement bar and header */
+.topbar{background:var(--coal);color:#fff;font-weight:400}
+.header{background:#fff;color:var(--text);border-bottom:1px solid var(--ash)}
+.header.scrolled{box-shadow:0 8px 24px -16px rgba(0,0,0,.35)}
+.logo img{height:36px}
+.tool:hover{background:rgba(0,0,0,.06)}
+.nav>ul>li>a::after{background:var(--ink)}
+.nav .nav-sale{color:var(--sale)}
+.mega,.search-panel{border-top:1px solid var(--ash)}
+.mega{box-shadow:0 30px 60px -30px rgba(0,0,0,.3)}
+.search-panel input:focus{border-color:var(--ink)}
+.mega-brands a:hover,.mega-list a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* Buttons and links */
+.btn-ink:hover{background:var(--coal-2);color:#fff}
+.link,.more-btn,.f-more,.f-reset,.buy-brand,.faq .ans a,.prose a{border-bottom-color:var(--ink)}
+.link:hover{color:var(--muted)}
+.card-name a:hover,.f-list a:hover,.toc a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.card-add:hover{background:var(--coal-2);color:#fff}
+.to-top:hover{background:var(--coal-2);color:#fff}
+
+/* Hero: the one dark moment */
+.hero-since{color:rgba(255,255,255,.72)}
+.hero-pick em{color:#fff}
+.hero-pick:hover{border-color:#fff}
+.hero .link:hover,.hero .btn-line:hover{color:#000}
+
+/* Trust strip, light */
+.trust{background:var(--mist);color:var(--text)}
+.trust li span{color:var(--muted)}
+.trust .icon,.perks .icon,.info-card .icon,.hl .icon,.check .icon,.svc-card .icon{color:#3b3a36}
+
+/* Sections that used to be black or coal */
+.sec-dark{background:#fff;color:var(--text);border-top:1px solid var(--ash)}
+.sec-coal{background:var(--mist);color:var(--text)}
+.sec-line{border-top:1px solid var(--ash)}
+.sec-dark .sec-head p,.sec-coal .sec-head p{color:var(--muted)}
+.sec-dark.on-dark .btn-line:hover,.sec-coal.on-dark .btn-line:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sec-dark.on-dark .link:hover,.sec-coal.on-dark .link:hover{color:var(--muted)}
+.steps{background:var(--ash);border-color:var(--ash)}
+.step{background:#fff}
+.step:hover{background:var(--mist)}
+.step::before{color:var(--ink)}
+.step p{color:var(--muted)}
+.svc-card{border-color:var(--ash);background:#fff}
+.svc-card:hover{border-color:var(--ink);background:#fff}
+.svc-card p{color:var(--muted)}
+.partners{border-top-color:var(--ash);color:var(--text)}
+.partners span:first-child{color:var(--muted)}
+.sec-coal .check li{border-color:#d9d8d3}
+.sec-coal .lede{color:#3b3a36}
+
+/* Inner page banners: light unless they carry a photo */
+.phero{background:var(--mist);color:var(--text)}
+.phero .lede{color:#3b3a36}
+.phero:has(img.bg){background:#000;color:#fff}
+.phero:has(img.bg) .lede{color:rgba(255,255,255,.85)}
+.phero:has(img.bg) .btn-ink{background:#fff;color:#000}
+.phero:has(img.bg) .btn-ink:hover{background:var(--ash)}
+
+/* Category tiles: photo with the name underneath */
+.tiles{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto;gap:24px 12px}
+.tile,.tile-offer{display:flex;flex-direction:column;align-items:stretch;background:none;color:var(--text);aspect-ratio:auto;overflow:visible;grid-column:auto;grid-row:auto}
+.tile.big,.tile.wide{grid-column:auto;grid-row:auto}
+.tile::before,.tile-offer::before{display:none}
+.tile img{position:static;aspect-ratio:4/3;height:auto;border-radius:var(--r);z-index:0}
+.tile:hover img{transform:none;opacity:.9}
+.tile img{transition:opacity .25s}
+.tile-txt{padding:12px 0 0;align-items:center}
+.tile small{color:var(--muted);display:inline}
+.tile-txt::after{border-color:#c9c8c2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23191917' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");width:30px;height:30px}
+.tile:hover .tile-txt::after{background-color:var(--mist);border-color:var(--ink)}
+@media(min-width:900px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 20px}}
+@media(max-width:899px){.tile-offer{grid-column:auto;aspect-ratio:auto}.tile small{display:none}}
+
+/* Small accents that were orange */
+.faq details[open] summary{color:var(--ink)}
+.prose ul li::before{background:var(--ink)}
+.callout,.var-note{border-left-color:var(--ink)}
+.store .city{color:var(--muted)}
+.swatch[aria-pressed=true]{border-color:var(--ink)}
+.age-box{border-top:0}
+.stars{color:var(--ink)}
+
+/* Newsletter band, light */
+.news{background:var(--mist);color:var(--text);border-top:1px solid var(--ash)}
+.news p{color:#3b3a36;font-weight:400}
+.news input{border:1.5px solid var(--ash)}
+.news input:focus{border-color:var(--ink);outline:none}
+.news small{color:var(--muted)}
+
+/* Footer: charcoal, quiet accents */
+.footer a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.f-store .city{color:rgba(255,255,255,.6)}
+.f-contact .icon{color:rgba(255,255,255,.7)}
+.f-social a:hover{background:#fff;border-color:#fff;color:#000;text-decoration:none}
+.f-age,.f-bottom{background:#171613}
+.f-age i{border-color:rgba(255,255,255,.55);color:#fff}
+.f-col li a:hover{color:#fff}
+
+/* 404, light */
+.nf{background:var(--mist);color:var(--text)}
+.nf b{color:var(--ink)}
+.nf p{color:#3b3a36}
