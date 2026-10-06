@@ -572,9 +572,6 @@ a,button{-webkit-tap-highlight-color:transparent}
 .header{transition:box-shadow .25s}
 .header-in{transition:min-height .25s var(--ease)}
 .header.scrolled{box-shadow:0 10px 30px -12px rgba(0,0,0,.6)}
-.header.scrolled .header-in{min-height:60px}
-.header.scrolled .nav>ul>li>a{height:60px}
-.header.scrolled .nav>ul>li>a::after{bottom:13px}
 .proto{font-size:.76rem;padding:5px 16px}
 
 /* Search results */
@@ -620,7 +617,7 @@ a,button{-webkit-tap-highlight-color:transparent}
 button.chip{cursor:pointer}
 .active-f{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-10px 0 24px}
 .f-reset{font-size:.88rem;border-bottom:1.5px solid var(--ember);margin-left:6px}
-.toolbar{position:sticky;top:60px;z-index:20;background:#fff}
+.toolbar{position:sticky;top:72px;z-index:20;background:#fff}
 .shop .empty{padding:56px 0}
 
 /* Product */
@@ -665,9 +662,27 @@ button.chip{cursor:pointer}
   .hero-in{min-height:600px}
   .hero-cta .btn{flex:1 1 100%}
   .sec-head{align-items:flex-start;flex-direction:column}
-  .toolbar{top:56px}
   .g-nav{width:38px;height:38px}
   .stats{grid-template-columns:1fr 1fr}
   .f-main{gap:28px;padding-block:40px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* ---------- Availability, variants and product content ---------- */
+.badge.out{background:#5b5a55}
+.card.is-out .card-img img{opacity:.45;filter:grayscale(.6)}
+.card.is-out .price{color:var(--muted)}
+.f-check .n{margin-left:auto;color:var(--muted);font-size:.82rem}
+.cat-sub{margin-top:10px;font-size:1.05rem;color:var(--muted);max-width:60ch}
+.hl{margin-top:18px;display:grid;gap:8px}
+.hl li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;line-height:1.4}
+.hl .icon{width:18px;height:18px;color:var(--ember-ink);margin-top:2px;stroke-width:2.2}
+.opt-label{align-items:baseline;gap:12px}
+.opt-label .muted{font-size:.82rem}
+.swatch.off{color:#8d8c86;background:repeating-linear-gradient(135deg,#fff 0 6px,#f1f0ec 6px 12px);text-decoration:line-through}
+.swatch.off i{opacity:.4}
+.stock.out{color:#5b5a55}
+.stock.out::before{background:#9a9993}
+.btn[disabled]{background:#e5e5e5!important;color:#77766f!important;cursor:not-allowed;border-color:transparent}
+.spec td{color:#2a2926}
+.pdp+.sec .prose p{color:#3b3a36}
